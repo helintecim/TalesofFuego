@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tales of Fuego — Bar Catering & Mobile Bar Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --orange: #be350c;
+      --ivory: #f1e3d5;
+      --beige: #f6efe9;
+      --rose: #f4ada2;
+      --dark: #2a2a2a;
+      --mid: #5a4a3a;
+      --light: #8a7060;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; background: var(--ivory); color: var(--dark); overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(241,227,213,0.93);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid rgba(190,53,12,0.15);
+      transition: box-shadow 0.4s;
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--orange); letter-spacing: 1px; text-decoration: none; }
+    .nav-links { display: flex; gap: 1.8rem; }
+    .nav-links a { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-cta { font-family: 'Lato', sans-serif; font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.55rem 1.3rem; border: 1px solid var(--orange); color: var(--orange); background: transparent; cursor: pointer; transition: all 0.3s; }
+    .nav-cta:hover { background: var(--orange); color: white; }
+
+    /* ── HERO ── */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(160deg, #f6efe9 0%, #f1e3d5 50%, #eeddd0 100%); padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(244,173,162,0.18) 0%, transparent 70%); pointer-events: none; }
+    .hero-eyebrow { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--orange); margin-bottom: 1.5rem; animation: fadeUp 1s ease both; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 9vw, 8rem); font-weight: 700; line-height: 0.95; color: var(--dark); letter-spacing: -1px; animation: fadeUp 1s 0.2s ease both; }
+    .hero-title em { color: var(--orange); font-style: italic; }
+    .hero-subtitle { font-size: 0.82rem; letter-spacing: 3px; text-transform: uppercase; color: var(--light); margin-top: 1.5rem; animation: fadeUp 1s 0.4s ease both; }
+    .hero-divider { width: 40px; height: 1px; background: var(--orange); margin: 2rem auto; animation: fadeUp 1s 0.5s ease both; }
+    .hero-tagline { font-family: 'Playfair Display', serif; font-size: clamp(0.95rem, 2.2vw, 1.2rem); font-style: italic; color: var(--mid); max-width: 520px; line-height: 1.7; animation: fadeUp 1s 0.6s ease both; }
+    .hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 1s 0.8s ease both; }
+    .btn-primary { padding: 0.9rem 2.2rem; background: var(--orange); color: white; font-family: 'Lato', sans-serif; font-size: 0.73rem; letter-spacing: 2.5px; text-transform: uppercase; border: none; cursor: pointer; transition: all 0.3s; }
+    .btn-primary:hover { background: #9e2a08; transform: translateY(-2px); }
+    .btn-outline { padding: 0.9rem 2.2rem; background: transparent; color: var(--dark); font-family: 'Lato', sans-serif; font-size: 0.73rem; letter-spacing: 2.5px; text-transform: uppercase; border: 1px solid var(--dark); cursor: pointer; transition: all 0.3s; }
+    .btn-outline:hover { background: var(--dark); color: white; transform: translateY(-2px); }
+    .scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeUp 1.2s 1.5s ease both; }
+    .scroll-hint-text { font-size: 0.62rem; letter-spacing: 3px; text-transform: uppercase; color: var(--light); }
+    .scroll-hint-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--orange), transparent); animation: scrollPulse 1.8s ease-in-out infinite; }
+
+    /* ── VIDEO ── */
+    .video-section { position: relative; height: 75vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .video-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #c97b4a 0%, #e8a96b 25%, #d4895a 50%, #a05e35 75%, #8c4a25 100%); }
+    .video-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(30,15,5,0.35) 0%, rgba(30,15,5,0.5) 100%); }
+    .video-visual { position: absolute; inset: 0; overflow: hidden; }
+    .sun-circle { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(255,200,100,0.7) 0%, rgba(220,140,60,0.4) 50%, transparent 70%); }
+    .glass-shapes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 3rem; }
+    .glass-shape { width: 4px; background: linear-gradient(to bottom, rgba(255,230,180,0.8), rgba(255,180,100,0.3), transparent); border-radius: 2px; animation: glassFloat 4s ease-in-out infinite; }
+    .glass-shape:nth-child(1){height:200px;animation-delay:0s} .glass-shape:nth-child(2){height:280px;animation-delay:.7s} .glass-shape:nth-child(3){height:220px;animation-delay:1.4s} .glass-shape:nth-child(4){height:260px;animation-delay:.3s} .glass-shape:nth-child(5){height:190px;animation-delay:1s}
+    .video-content { position: relative; z-index: 10; text-align: center; color: white; padding: 0 2rem; }
+    .video-slogan { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 500; font-style: italic; line-height: 1.25; max-width: 750px; margin: 0 auto 2.5rem; }
+    .video-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-ghost { padding: 0.9rem 2.2rem; background: transparent; color: white; font-family: 'Lato', sans-serif; font-size: 0.73rem; letter-spacing: 2.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── SHARED ── */
+    section { padding: 6rem 3rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: 0.66rem; letter-spacing: 4px; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.1; color: var(--dark); margin-bottom: 1.5rem; }
+    .section-title em { color: var(--orange); font-style: italic; }
+
+    /* ── MANIFESTO ── */
+    .manifesto { background: var(--dark); text-align: center; }
+    .manifesto-lines { max-width: 700px; margin: 0 auto; }
+    .manifesto-line { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 4vw, 2.8rem); color: var(--ivory); line-height: 1.3; margin-bottom: 0.3rem; }
+    .manifesto-line.accent { color: var(--rose); font-style: italic; }
+    .manifesto-body { font-size: 1rem; color: rgba(241,227,213,0.6); margin-top: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+
+    /* ── BIZ KIMIZ ── */
+    .about { background: var(--beige); }
+    .about-top { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-bottom: 5rem; }
+    .about-divider { width: 40px; height: 1.5px; background: var(--orange); margin: 1.5rem 0 2rem; }
+    .about-body { font-size: 0.93rem; color: var(--mid); line-height: 1.95; }
+    .about-values { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .about-value { display: flex; align-items: flex-start; gap: 1rem; }
+    .about-value-icon { color: var(--orange); font-size: 0.7rem; margin-top: 0.3rem; flex-shrink: 0; }
+    .about-value-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--dark); margin-bottom: 0.2rem; }
+    .about-value-desc { font-size: 0.82rem; color: var(--light); line-height: 1.6; }
+    .about-visual-wrap { position: relative; width: 100%; padding-bottom: 115%; }
+    .about-card-main { position: absolute; top: 0; left: 0; right: 10%; bottom: 15%; overflow: hidden; border-radius: 2px; }
+    .about-card-inner { width: 100%; height: 100%; }
+    .about-card-label { position: absolute; bottom: 1.5rem; left: 1.5rem; display: flex; flex-direction: column; gap: 0.2rem; }
+    .about-card-tag { font-family: 'Playfair Display', serif; font-size: 1rem; color: white; font-style: italic; }
+    .about-card-sub { font-size: 0.66rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+    .about-card-accent { position: absolute; bottom: 0; right: 0; width: 42%; height: 36%; overflow: hidden; border-radius: 2px; border: 3px solid var(--beige); }
+    .about-founder-badge { position: absolute; top: 1.5rem; right: 0; width: 90px; height: 90px; border-radius: 50%; background: var(--orange); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .about-founder-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: white; line-height: 1; }
+    .about-founder-text { font-size: 0.56rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.8); line-height: 1.4; margin-top: 0.2rem; }
+
+    /* ── IDENTITY CARDS (from image) ── */
+    .identity-strip { margin-top: 1rem; }
+    .identity-label { font-size: 0.66rem; letter-spacing: 4px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.8rem; text-align: center; }
+    .identity-tagline { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-style: italic; color: var(--dark); text-align: center; margin-bottom: 2.5rem; }
+    .identity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .identity-card {
+      background: var(--ivory);
+      border: 1.5px solid rgba(190,53,12,0.35);
+      padding: 1.8rem 1.5rem 1.5rem;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .identity-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(42,27,15,0.1); }
+    .identity-card-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--orange); margin-bottom: 0.6rem; }
+    .identity-card-desc { font-size: 0.85rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.2rem; }
+    .identity-card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: linear-gradient(135deg, #c97b4a, #e8a96b); }
+    .identity-img-1 { background: linear-gradient(135deg, #8a9a60 0%, #c8b870 50%, #a09050 100%); }
+    .identity-img-2 { background: linear-gradient(135deg, #5a4a3a 0%, #8a6a5a 50%, #4a3a2a 100%); }
+    .identity-img-3 { background: linear-gradient(135deg, #6a8a9a 0%, #4a7a8a 50%, #3a5a6a 100%); }
+    .identity-footer { display: flex; align-items: center; gap: 1rem; margin-top: 2.5rem; padding-top: 2rem; border-top: 0.5px solid rgba(190,53,12,0.2); }
+    .identity-footer-line { flex: 1; height: 0.5px; background: rgba(190,53,12,0.25); }
+    .identity-footer-text { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-style: italic; color: var(--mid); text-align: center; }
+    .identity-instagram { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); text-align: right; margin-bottom: 1.5rem; }
+
+    /* ── SERVICES ── */
+    .services { background: var(--ivory); }
+    .services-intro { max-width: 580px; margin-bottom: 3rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .service-card { background: var(--beige); padding: 2.2rem 1.8rem 1.8rem; border: 0.5px solid rgba(190,53,12,0.15); transition: all 0.35s; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .service-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.4s; }
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 18px 45px rgba(42,27,15,0.1); }
+    .service-card:hover::before { width: 100%; }
+    .service-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: rgba(190,53,12,0.1); line-height: 1; margin-bottom: 0.8rem; }
+    .service-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--dark); margin-bottom: 0.6rem; }
+    .service-desc { font-size: 0.85rem; color: var(--light); line-height: 1.8; flex: 1; }
+    .service-btn { margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); background: transparent; border: none; cursor: pointer; padding: 0; font-family: 'Lato', sans-serif; transition: gap 0.3s; }
+    .service-btn:hover { gap: 0.9rem; }
+    .service-btn-arrow { font-size: 0.9rem; }
+
+    /* ── SERVICE MODAL ── */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(20,10,5,0.65); z-index: 500; display: none; align-items: center; justify-content: center; padding: 2rem; }
+    .modal-backdrop.active { display: flex; }
+    .modal { background: var(--ivory); max-width: 780px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative; animation: modalIn 0.35s ease; }
+    @keyframes modalIn { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
+    .modal-close { position: absolute; top: 1.2rem; right: 1.2rem; background: none; border: none; font-size: 1.4rem; color: var(--light); cursor: pointer; z-index: 10; transition: color 0.2s; line-height: 1; }
+    .modal-close:hover { color: var(--orange); }
+    .modal-hero { height: 260px; overflow: hidden; position: relative; }
+    .modal-hero-bg { width: 100%; height: 100%; }
+    .modal-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,15,5,0.6) 0%, transparent 60%); }
+    .modal-hero-label { position: absolute; bottom: 1.8rem; left: 2rem; color: white; }
+    .modal-hero-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: rgba(255,255,255,0.2); line-height: 1; }
+    .modal-hero-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: white; }
+    .modal-body { padding: 2.5rem; }
+    .modal-tagline { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: var(--orange); margin-bottom: 1.2rem; line-height: 1.5; }
+    .modal-text { font-size: 0.9rem; color: var(--mid); line-height: 1.95; margin-bottom: 2rem; }
+    .modal-features-title { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--light); margin-bottom: 1rem; }
+    .modal-features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 2rem; margin-bottom: 2rem; }
+    .modal-feature { font-size: 0.85rem; color: var(--dark); display: flex; align-items: center; gap: 0.6rem; }
+    .modal-feature::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+    .modal-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 2rem; }
+    .modal-gallery-item { aspect-ratio: 4/3; overflow: hidden; border-radius: 1px; }
+    .modal-gallery-swatch { width: 100%; height: 100%; transition: transform 0.4s; }
+    .modal-gallery-item:hover .modal-gallery-swatch { transform: scale(1.05); }
+    .modal-cta { width: 100%; padding: 1rem; background: var(--orange); color: white; font-family: 'Lato', sans-serif; font-size: 0.73rem; letter-spacing: 2.5px; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.3s; }
+    .modal-cta:hover { background: #9e2a08; }
+
+    /* ── EXPERIENCE FLOW ── */
+    .experience { background: var(--beige); }
+    .flow-steps { display: flex; gap: 0; margin-top: 3rem; position: relative; }
+    .flow-steps::before { content: ''; position: absolute; top: 28px; left: 0; right: 0; height: 1px; background: rgba(190,53,12,0.2); z-index: 0; }
+    .flow-step { flex: 1; text-align: center; position: relative; z-index: 1; padding: 0 0.8rem; }
+    .flow-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--beige); border: 1.5px solid var(--orange); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--orange); }
+    .flow-step-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--dark); margin-bottom: 0.5rem; }
+    .flow-step-desc { font-size: 0.78rem; color: var(--light); line-height: 1.7; }
+
+    /* ── CONCEPTS ── */
+    .concepts { background: var(--ivory); }
+    .concepts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .concept-card { position: relative; overflow: hidden; aspect-ratio: 16/10; cursor: pointer; }
+    .concept-bg { position: absolute; inset: 0; transition: transform 0.5s ease; }
+    .concept-card:hover .concept-bg { transform: scale(1.05); }
+    .concept-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,15,5,0.75) 0%, rgba(30,15,5,0.2) 60%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem; }
+    .concept-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: white; margin-bottom: 0.3rem; }
+    .concept-sub { font-size: 0.73rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+
+    /* ── PACKAGES ── */
+    .packages { background: var(--beige); }
+    .packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; align-items: start; }
+    .package-card { background: var(--ivory); border: 0.5px solid rgba(190,53,12,0.15); padding: 2.5rem 2rem; transition: all 0.35s; }
+    .package-card.featured { background: var(--orange); border-color: var(--orange); transform: scale(1.03); }
+    .package-card:not(.featured):hover { transform: translateY(-5px); box-shadow: 0 18px 45px rgba(42,27,15,0.1); }
+    .pkg-badge { font-size: 0.63rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 1rem; }
+    .pkg-name { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; }
+    .package-card.featured .pkg-name { color: white; }
+    .pkg-tagline { font-size: 0.83rem; color: var(--light); line-height: 1.7; margin-bottom: 1.5rem; }
+    .package-card.featured .pkg-tagline { color: rgba(255,255,255,0.75); }
+    .pkg-divider { height: 1px; background: rgba(190,53,12,0.15); margin-bottom: 1.5rem; }
+    .package-card.featured .pkg-divider { background: rgba(255,255,255,0.2); }
+    .pkg-features { list-style: none; }
+    .pkg-features li { font-size: 0.83rem; color: var(--mid); padding: 0.45rem 0; display: flex; align-items: center; gap: 0.6rem; }
+    .package-card.featured .pkg-features li { color: rgba(255,255,255,0.85); }
+    .pkg-features li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+    .package-card.featured .pkg-features li::before { background: rgba(255,255,255,0.6); }
+    .pkg-cta { width: 100%; margin-top: 2rem; padding: 0.85rem; font-family: 'Lato', sans-serif; font-size: 0.7rem; letter-spacing: 2.5px; text-transform: uppercase; background: transparent; border: 1px solid var(--dark); color: var(--dark); cursor: pointer; transition: all 0.3s; }
+    .pkg-cta:hover { background: var(--dark); color: white; }
+    .package-card.featured .pkg-cta { background: white; border-color: white; color: var(--orange); }
+    .package-card.featured .pkg-cta:hover { background: rgba(255,255,255,0.85); }
+
+    /* ── REFERENCES ── */
+    .references { background: var(--ivory); text-align: center; }
+    .refs-strip { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; margin-top: 3rem; }
+    .ref-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .ref-count { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--orange); }
+    .ref-label { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--light); }
+
+    /* ── TESTIMONIAL ── */
+    .testimonial { background: var(--beige); text-align: center; }
+    .testimonial-quote { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 3vw, 1.8rem); font-style: italic; color: var(--dark); max-width: 680px; margin: 0 auto; line-height: 1.6; }
+    .testimonial-author { font-size: 0.76rem; letter-spacing: 2px; text-transform: uppercase; color: var(--light); margin-top: 1.5rem; }
+
+    /* ── GALLERY ── */
+    .gallery { background: var(--ivory); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 200px); gap: 1rem; margin-top: 3rem; }
+    .gallery-item { overflow: hidden; border-radius: 2px; }
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+    .gallery-swatch { width: 100%; height: 100%; transition: transform 0.5s ease; }
+    .gallery-item:hover .gallery-swatch { transform: scale(1.06); }
+
+    /* ── FAQ ── */
+    .faq { background: var(--beige); }
+    .faq-list { margin-top: 3rem; max-width: 800px; }
+    .faq-item { border-bottom: 0.5px solid rgba(190,53,12,0.2); }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; cursor: pointer; font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--dark); transition: color 0.3s; }
+    .faq-q:hover { color: var(--orange); }
+    .faq-icon { font-size: 1.2rem; color: var(--orange); font-weight: 300; transition: transform 0.3s; flex-shrink: 0; margin-left: 1rem; }
+    .faq-a { font-size: 0.88rem; color: var(--light); line-height: 1.9; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; }
+    .faq-item.open .faq-a { max-height: 200px; padding-bottom: 1.5rem; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--ivory); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; align-items: start; }
+    .contact-info-label { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--dark); margin-bottom: 1rem; line-height: 1.3; }
+    .contact-info-text { font-size: 0.88rem; color: var(--light); line-height: 1.9; margin-bottom: 2rem; }
+    .contact-detail { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+    .contact-detail-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); }
+    .contact-detail-val { font-size: 0.9rem; color: var(--dark); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .form-label { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--light); }
+    .form-input, .form-select, .form-textarea { width: 100%; padding: 0.85rem 1rem; background: var(--beige); border: 0.5px solid rgba(190,53,12,0.25); color: var(--dark); font-family: 'Lato', sans-serif; font-size: 0.88rem; outline: none; transition: border-color 0.3s; -webkit-appearance: none; appearance: none; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--orange); }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-submit { width: 100%; padding: 1rem; background: var(--orange); color: white; font-family: 'Lato', sans-serif; font-size: 0.73rem; letter-spacing: 2.5px; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.3s; }
+    .form-submit:hover { background: #9e2a08; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark); padding: 4rem 3rem 2rem; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--rose); }
+    .footer-tagline { font-size: 0.78rem; color: rgba(241,227,213,0.4); margin-top: 0.4rem; letter-spacing: 1px; }
+    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; }
+    .footer-links a { font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(241,227,213,0.5); text-decoration: none; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--rose); }
+    .footer-bottom { border-top: 0.5px solid rgba(241,227,213,0.1); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: 0.73rem; color: rgba(241,227,213,0.3); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes glassFloat { 0%,100%{opacity:.6;transform:translateY(0)} 50%{opacity:1;transform:translateY(-12px)} }
+    @keyframes scrollPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .about-top { grid-template-columns: 1fr; gap: 3rem; }
+      .about-visual-wrap { padding-bottom: 70%; }
+      .identity-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .packages-grid { grid-template-columns: 1fr; }
+      .package-card.featured { transform: scale(1); }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .flow-steps { flex-direction: column; gap: 2rem; }
+      .flow-steps::before { display: none; }
+      .gallery-grid { grid-template-columns: repeat(2,1fr); grid-template-rows: auto; }
+      .gallery-item { height: 180px; }
+      .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; height: 250px; }
+      .gallery-item:nth-child(4) { grid-column: span 2; }
+      .footer-top { flex-direction: column; }
+      .modal-features { grid-template-columns: 1fr; }
+      .modal-gallery { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .concepts-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .refs-strip { gap: 2rem; }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">Tales of Fuego</a>
+    <div class="nav-links">
+      <a href="#biz-kimiz">Biz Kimiz</a>
+      <a href="#deneyim">Hizmetler</a>
+      <a href="#konseptler">Konseptler</a>
+      <a href="#paketler">Paketler</a>
+      <a href="#galeri">Galeri</a>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Teklif Al</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-eyebrow">Bar Catering &amp; Mobile Bar Experience</div>
+    <h1 class="hero-title">Tales of<br><em>Fuego</em></h1>
+    <div class="hero-subtitle">&#199;e&#351;me &middot; Urla &middot; Bodrum &middot; &#304;stanbul</div>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">Biz bar de&#287;il, etkinli&#287;in ak&#305;&#351;&#305;n&#305; y&uuml;kselten bir deneyim orta&#287;&#305;y&#305;z.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Teklif Al</button>
+      <button class="btn-outline" onclick="document.getElementById('biz-kimiz').scrollIntoView({behavior:'smooth'})">Deneyimi Ke&#351;fet</button>
+    </div>
+    <div class="scroll-hint">
+      <span class="scroll-hint-text">Kayd&#305;r</span>
+      <div class="scroll-hint-line"></div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <div class="video-section">
+    <div class="video-bg"></div>
+    <div class="video-visual">
+      <div class="sun-circle"></div>
+      <div class="glass-shapes">
+        <div class="glass-shape"></div><div class="glass-shape"></div><div class="glass-shape"></div><div class="glass-shape"></div><div class="glass-shape"></div>
+      </div>
+    </div>
+    <div class="video-overlay"></div>
+    <div class="video-content">
+      <p class="video-slogan">"Etkinli&#287;in en uzun deneyimini<br>biz tasar&#305;lar&#305;z."</p>
+      <div class="video-btns">
+        <button class="btn-primary" onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Teklif Al</button>
+        <button class="btn-ghost" onclick="document.getElementById('deneyim').scrollIntoView({behavior:'smooth'})">Deneyimi Ke&#351;fet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <div class="container">
+      <div class="manifesto-lines reveal">
+        <div class="manifesto-line">Bir bar de&#287;iliz.</div>
+        <div class="manifesto-line accent">Etkinli&#287;inizin ritmi</div>
+        <div class="manifesto-line">biz &mdash; iz b&#305;rak&#305;yoruz.</div>
+      </div>
+      <p class="manifesto-body reveal">Tales of Fuego, her etkinli&#287;i sanatsal bir deneyime d&ouml;n&uuml;&#351;t&uuml;r&uuml;r. Premium i&#231;ki se&#231;kilerimiz, &ouml;zel tasar&#305;m bar kurulumlar&#305;m&#305;z ve uzman ekibimizle d&uuml;&#287;&uuml;n&uuml;n&uuml;z&uuml;, lansman&#305;n&#305;z&#305; veya &ouml;zel gecenizi &ouml;m&uuml;r boyu hat&#305;rlayaca&#287;&#305;n&#305;z bir &#351;&ouml;len yap&#305;yoruz.</p>
+    </div>
+  </section>
+
+  <!-- BIZ KIMIZ -->
+  <section class="about" id="biz-kimiz">
+    <div class="container">
+      <!-- Top: text + visual -->
+      <div class="about-top">
+        <div class="reveal">
+          <div class="section-label">Biz Kimiz?</div>
+          <h2 class="section-title">Bir bar servisinden<br><em>&#231;ok daha fazlas&#305;</em></h2>
+          <div class="about-divider"></div>
+          <p class="about-body">Tales of Fuego, 2016 y&#305;l&#305;nda Ege k&#305;y&#305;lar&#305;nda do&#287;du. Kurucular&#305;m&#305;z, y&#305;llar boyunca l&uuml;ks oteller ve uluslararas&#305; etkinliklerde edindikleri deneyimi kendi vizyonlar&#305;yla harmanlayarak bamba&#351;ka bir &#351;ey yaratt&#305;: sadece i&#231;ki servisi de&#287;il, etkinli&#287;in ruhunu &#351;ekillendiren bir deneyim ortakl&#305;&#287;&#305;.</p>
+          <p class="about-body" style="margin-top:1rem;">&#199;e&#351;me'nin g&uuml;nbat&#305;m&#305;ndan Bodrum'un yat partilerine, kurumsal lansmanlardan villa d&uuml;&#287;&uuml;nlerine kadar her etkinli&#287;i bir sanat eserine d&ouml;n&uuml;&#351;t&uuml;r&uuml;yoruz. Ekibimiz; miksologlar, bar tasar&#305;mc&#305;lar&#305; ve etkinlik koordinat&ouml;rlerinden olu&#351;uyor.</p>
+          <div class="about-values">
+            <div class="about-value">
+              <div class="about-value-icon">&#10022;</div>
+              <div>
+                <div class="about-value-title">&Ouml;zg&uuml;nl&uuml;k</div>
+                <div class="about-value-desc">Her etkinlik i&#231;in s&#305;f&#305;rdan tasar&#305;lanm&#305;&#351;, size &ouml;zel bir deneyim.</div>
+              </div>
+            </div>
+            <div class="about-value">
+              <div class="about-value-icon">&#10022;</div>
+              <div>
+                <div class="about-value-title">Ustal&#305;k</div>
+                <div class="about-value-desc">Y&#305;llar&#305;n birikimi ve tutkusu, her kadehin arkas&#305;nda.</div>
+              </div>
+            </div>
+            <div class="about-value">
+              <div class="about-value-icon">&#10022;</div>
+              <div>
+                <div class="about-value-title">Zarafet</div>
+                <div class="about-value-desc">Detaylara verilen &ouml;zen ve estetik, fark yaratan deneyim.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="about-visual-wrap">
+            <div class="about-card-main">
+              <div class="about-card-inner" style="background:linear-gradient(145deg,#c97b4a 0%,#e8a96b 40%,#d4895a 100%);"></div>
+              <div class="about-card-label">
+                <span class="about-card-tag">Tales of Fuego</span>
+                <span class="about-card-sub">Urla, Ege K&#305;y&#305;s&#305;</span>
+              </div>
+            </div>
+            <div class="about-card-accent">
+              <div class="about-card-inner" style="background:linear-gradient(135deg,#f1e3d5 0%,#d4b896 100%);"></div>
+            </div>
+            <div class="about-founder-badge">
+              <div class="about-founder-num">8</div>
+              <div class="about-founder-text">Y&#305;ll&#305;k<br>Deneyim</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Identity Strip (from uploaded image) -->
+      <div class="identity-strip reveal">
+        <div class="identity-instagram">&#9711; @fuegourla</div>
+        <div class="identity-tagline">Biz bar de&#287;il, etkinli&#287;in ak&#305;&#351;&#305;n&#305; y&uuml;kselten bir deneyim orta&#287;&#305;y&#305;z.</div>
+        <div class="identity-grid">
+          <div class="identity-card">
+            <div class="identity-card-title">K&ouml;ken</div>
+            <div class="identity-card-desc">Fuego Urla'dan do&#287;an gastronomi ve kokteyl k&uuml;lt&uuml;r&uuml;.</div>
+            <div class="identity-card-img identity-img-1"></div>
+          </div>
+          <div class="identity-card">
+            <div class="identity-card-title">Profil</div>
+            <div class="identity-card-desc">A+ misafir profiline ve l&uuml;ks t&uuml;ketim al&#305;&#351;kanl&#305;klar&#305;na hakim ekip.</div>
+            <div class="identity-card-img identity-img-2"></div>
+          </div>
+          <div class="identity-card">
+            <div class="identity-card-title">Denge</div>
+            <div class="identity-card-desc">Kurumsal disiplin ile butik ve sanatsal dokunu&#351;un birle&#351;imi.</div>
+            <div class="identity-card-img identity-img-3"></div>
+          </div>
+        </div>
+        <div class="identity-footer">
+          <div class="identity-footer-line"></div>
+          <div class="identity-footer-text">Tecr&uuml;beli, risksiz, haz&#305;r ve g&uuml;venilir.</div>
+          <div class="identity-footer-line"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="deneyim">
+    <div class="container">
+      <div class="services-intro reveal">
+        <div class="section-label">Hizmetlerimiz</div>
+        <h2 class="section-title">Her an&#305;n&#305;za<br><em>&ouml;zel</em> deneyim</h2>
+        <p style="font-size:0.88rem; color:var(--light); line-height:1.8;">Hangi hizmetimizin etkinli&#287;inize en uygun oldu&#287;unu ke&#351;fetmek i&#231;in detay butonuna t&#305;klay&#305;n.</p>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card reveal">
+          <div class="service-num">01</div>
+          <div class="service-name">Mobile Bar Setup</div>
+          <p class="service-desc">Villa, yat, plaj veya bah&#231;e &mdash; her mek&acirc;n&#305; tam donan&#305;ml&#305;, estetik bir bar alan&#305;na d&ouml;n&uuml;&#351;t&uuml;r&uuml;yoruz.</p>
+          <button class="service-btn" onclick="openModal('mobile-bar')">Detaylar&#305; G&ouml;r <span class="service-btn-arrow">&#8594;</span></button>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-num">02</div>
+          <div class="service-name">Kokteyl Tasar&#305;m&#305;</div>
+          <p class="service-desc">Etkinli&#287;inize &ouml;zel i&#231;ecek men&uuml;s&uuml;, marka renklerinize uygun signature kokteyl formülleri ve premium sunumlar.</p>
+          <button class="service-btn" onclick="openModal('kokteyl')">Detaylar&#305; G&ouml;r <span class="service-btn-arrow">&#8594;</span></button>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-num">03</div>
+          <div class="service-name">Kurumsal Lansmanlar</div>
+          <p class="service-desc">Marka kimli&#287;inizi yans&#305;tan, misafirlerinizi etkileyen kurumsal etkinlik bar deneyimleri.</p>
+          <button class="service-btn" onclick="openModal('kurumsal')">Detaylar&#305; G&ouml;r <span class="service-btn-arrow">&#8594;</span></button>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-num">04</div>
+          <div class="service-name">L&uuml;ks D&uuml;&#287;&uuml;nler</div>
+          <p class="service-desc">En &ouml;zel g&uuml;n&uuml;n&uuml;zde, hayalinizdeki bar esteti&#287;i ve i&#231;ecek seremon tarz&#305;yla hizmetinizdeyiz.</p>
+          <button class="service-btn" onclick="openModal('dugun')">Detaylar&#305; G&ouml;r <span class="service-btn-arrow">&#8594;</span></button>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-num">05</div>
+          <div class="service-name">&Ouml;zel Etkinlikler</div>
+          <p class="service-desc">Do&#287;um g&uuml;n&uuml; kutlamalar&#305;ndan tatil partilerine, her &ouml;zel an&#305; unutulmaz k&#305;lan deneyimler.</p>
+          <button class="service-btn" onclick="openModal('ozel')">Detaylar&#305; G&ouml;r <span class="service-btn-arrow">&#8594;</span></button>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-num">06</div>
+          <div class="service-name">Yat &amp; Villa Deneyimi</div>
+          <p class="service-desc">Akdeniz'in e&#351;siz manzaras&#305;nda, yat ve villa etkinliklerinize premium mobil bar hizmetleri.</p>
+          <button class="service-btn" onclick="openModal('yat-villa')">Detaylar&#305; G&ouml;r <span class="service-btn-arrow">&#8594;</span></button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE MODALS -->
+  <div class="modal-backdrop" id="modal-backdrop" onclick="handleBackdropClick(event)">
+    <div class="modal" id="modal-content">
+      <button class="modal-close" onclick="closeModal()">&#10005;</button>
+      <div class="modal-hero">
+        <div class="modal-hero-bg" id="modal-hero-bg"></div>
+        <div class="modal-hero-overlay"></div>
+        <div class="modal-hero-label">
+          <div class="modal-hero-num" id="modal-num"></div>
+          <div class="modal-hero-title" id="modal-title"></div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-tagline" id="modal-tagline"></div>
+        <p class="modal-text" id="modal-text"></p>
+        <div class="modal-features-title">Kapsam &amp; &Ouml;zellikler</div>
+        <div class="modal-features" id="modal-features"></div>
+        <div class="modal-gallery" id="modal-gallery"></div>
+        <button class="modal-cta" onclick="closeModal(); document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Bu Hizmet &#304;&#231;in Teklif Al</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE FLOW -->
+  <section class="experience">
+    <div class="container">
+      <div class="reveal" style="text-align:center; max-width:580px; margin:0 auto 4rem;">
+        <div class="section-label">Nas&#305;l &#199;al&#305;&#351;&#305;r&#305;z</div>
+        <h2 class="section-title">Konseptten<br>son kadehe <em>kadar</em></h2>
+      </div>
+      <div class="flow-steps reveal">
+        <div class="flow-step">
+          <div class="flow-dot">I</div>
+          <div class="flow-step-title">Vizyonu Anl&#305;yoruz</div>
+          <p class="flow-step-desc">Etkinli&#287;inizin ruhunu, tarz&#305;n&#305; ve beklentilerinizi derinlemesine dinliyoruz.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">II</div>
+          <div class="flow-step-title">Konsept Tasar&#305;yoruz</div>
+          <p class="flow-step-desc">Bar kurulumu, men&uuml; ve estetik i&#231;in size &ouml;zel bir konsept geli&#351;tiriyoruz.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">III</div>
+          <div class="flow-step-title">Lezzetleri Kuruyoruz</div>
+          <p class="flow-step-desc">Signature kokteyllerinizi, premium i&#231;ki se&#231;kisini ve sunum detaylar&#305;n&#305; haz&#305;rl&#305;yoruz.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">IV</div>
+          <div class="flow-step-title">Atmosferi &#304;n&#351;a Ediyoruz</div>
+          <p class="flow-step-desc">Bar kurulumu, dekor ve &#305;&#351;&#305;k tasar&#305;m&#305;yla mek&acirc;n&#305; d&ouml;n&uuml;&#351;t&uuml;r&uuml;yoruz.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">V</div>
+          <div class="flow-step-title">Deneyimi Ya&#351;at&#305;yoruz</div>
+          <p class="flow-step-desc">&#304;lk kokteylden son kadehe kadar, ekibimiz sizinle ve misafirlerinizle birlikte.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BAR CONCEPTS -->
+  <section class="concepts" id="konseptler">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Bar Konseptlerimiz</div>
+        <h2 class="section-title">Her mek&acirc;na,<br>her <em>ruha</em> uygun</h2>
+      </div>
+      <div class="concepts-grid">
+        <div class="concept-card reveal">
+          <div class="concept-bg" style="background:linear-gradient(135deg,#e8d5c4 0%,#d4b896 50%,#c4a07a 100%);"></div>
+          <div class="concept-overlay"><div class="concept-title">Minimal Modern</div><div class="concept-sub">Beyaz, temiz, zarif</div></div>
+        </div>
+        <div class="concept-card reveal">
+          <div class="concept-bg" style="background:linear-gradient(135deg,#c8a870 0%,#a07840 50%,#805830 100%);"></div>
+          <div class="concept-overlay"><div class="concept-title">Natural Premium</div><div class="concept-sub">Ah&#351;ap, do&#287;a &#305;&#351;&#305;&#287;&#305;, a&#231;&#305;k hava</div></div>
+        </div>
+        <div class="concept-card reveal">
+          <div class="concept-bg" style="background:linear-gradient(135deg,#be350c 0%,#8c2008 50%,#6a1806 100%);"></div>
+          <div class="concept-overlay"><div class="concept-title">Branded Bar</div><div class="concept-sub">Kurumsal kimlik, &ouml;zel tasar&#305;m</div></div>
+        </div>
+        <div class="concept-card reveal">
+          <div class="concept-bg" style="background:linear-gradient(135deg,#e8b870 0%,#d4965a 50%,#c08040 100%);"></div>
+          <div class="concept-overlay"><div class="concept-title">Outdoor Setup</div><div class="concept-sub">Villa, plaj, g&uuml;nbat&#305;m&#305;</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="packages" id="paketler">
+    <div class="container">
+      <div class="reveal" style="text-align:center; max-width:540px; margin:0 auto 1rem;">
+        <div class="section-label">Paketlerimiz</div>
+        <h2 class="section-title">Etkinli&#287;inize <em>&ouml;zel</em><br>&#231;&ouml;z&uuml;mler</h2>
+      </div>
+      <div class="packages-grid">
+        <div class="package-card reveal">
+          <div class="pkg-name">Essential</div>
+          <p class="pkg-tagline">Sade ve zarif. K&uuml;&#231;&uuml;k &ouml;zel davetler i&#231;in m&uuml;kemmel ba&#351;lang&#305;&#231;.</p>
+          <div class="pkg-divider"></div>
+          <ul class="pkg-features">
+            <li>Mobile bar kurulumu</li>
+            <li>Standart i&#231;ki men&uuml;s&uuml;</li>
+            <li>2 profesyonel barista</li>
+            <li>4 saate kadar hizmet</li>
+            <li>Temel aksesuar seti</li>
+          </ul>
+          <button class="pkg-cta" onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Teklif Al</button>
+        </div>
+        <div class="package-card featured reveal">
+          <div class="pkg-badge">En Pop&uuml;ler</div>
+          <div class="pkg-name">Signature</div>
+          <p class="pkg-tagline">Tales of Fuego imzal&#305; deneyim. &Ouml;zel kokteyl men&uuml;s&uuml; ve tam atmosfer.</p>
+          <div class="pkg-divider"></div>
+          <ul class="pkg-features">
+            <li>Premium bar kurulumu</li>
+            <li>&Ouml;zel signature kokteyl men&uuml;s&uuml;</li>
+            <li>3 uzman barista + asistan</li>
+            <li>6 saate kadar hizmet</li>
+            <li>Premium dekor &amp; ayd&#305;nlatma</li>
+            <li>Soft drink istasyonu</li>
+            <li>Etkinlik sonras&#305; rapor</li>
+          </ul>
+          <button class="pkg-cta" onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Teklif Al</button>
+        </div>
+        <div class="package-card reveal">
+          <div class="pkg-name">Full Experience</div>
+          <p class="pkg-tagline">S&#305;n&#305;rlar&#305; olmayan bir deneyim. Tam konsept, &ouml;zel tasar&#305;m.</p>
+          <div class="pkg-divider"></div>
+          <ul class="pkg-features">
+            <li>Tam konsept &amp; tasar&#305;m dan&#305;&#351;manl&#305;&#287;&#305;</li>
+            <li>S&#305;n&#305;rs&#305;z men&uuml; &ouml;zelle&#351;tirme</li>
+            <li>5+ ki&#351;ilik uzman ekip</li>
+            <li>8 saate kadar hizmet</li>
+            <li>Branded bar kurulumu</li>
+            <li>VIP lounge bar setup</li>
+            <li>Foto&#287;raf &amp; i&#231;erik &uuml;retimi</li>
+          </ul>
+          <button class="pkg-cta" onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Teklif Al</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section class="references">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Rakamlarla Tales of Fuego</div>
+        <h2 class="section-title">G&uuml;ven ve <em>deneyim</em></h2>
+      </div>
+      <div class="refs-strip reveal">
+        <div class="ref-item"><div class="ref-count">250+</div><div class="ref-label">Mutlu Etkinlik</div></div>
+        <div class="ref-item"><div class="ref-count">8+</div><div class="ref-label">Y&#305;ll&#305;k Deneyim</div></div>
+        <div class="ref-item"><div class="ref-count">15K+</div><div class="ref-label">Servis Edilen Misafir</div></div>
+        <div class="ref-item"><div class="ref-count">40+</div><div class="ref-label">Premium Lokasyon</div></div>
+      </div>
+      <p class="reveal" style="font-size:0.85rem; color:var(--light); margin-top:3rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.9; text-align:center;">&#199;e&#351;me'nin g&uuml;n bat&#305;mlar&#305;ndan &#304;stanbul'un teraslar&#305;na, Ege'nin mavisiyle bulu&#351;an villa partilerinden kurumsal gala gecelerine &mdash; her etkinlikte ayn&#305; tutku.</p>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testimonial">
+    <div class="container">
+      <div class="reveal">
+        <p class="testimonial-quote">"Tales of Fuego, d&uuml;&#287;&uuml;n&uuml;m&uuml;z&uuml; sadece bir etkinlik olarak de&#287;il, ger&#231;ek bir deneyime d&ouml;n&uuml;&#351;t&uuml;rd&uuml;. Bar kurulumu ba&#351;&#305;ndan sonuna kadar m&uuml;kemmeldi."</p>
+        <div class="testimonial-author">Selin &amp; Emre K. &mdash; Villa D&uuml;&#287;&uuml;n&uuml;, Urla 2024</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="galeri">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">An&#305;lardan Kareler</div>
+        <h2 class="section-title">Her kare bir <em>hik&acirc;ye</em></h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><div class="gallery-swatch" style="background:linear-gradient(145deg,#c97b4a 0%,#e8a96b 40%,#d4895a 70%,#b06840 100%);height:100%;"></div></div>
+        <div class="gallery-item"><div class="gallery-swatch" style="background:linear-gradient(160deg,#e8d5c4 0%,#c8a880 100%);height:100%;"></div></div>
+        <div class="gallery-item"><div class="gallery-swatch" style="background:linear-gradient(130deg,#be350c 0%,#8c2008 100%);height:100%;"></div></div>
+        <div class="gallery-item"><div class="gallery-swatch" style="background:linear-gradient(150deg,#d4b896 0%,#a07840 100%);height:100%;"></div></div>
+        <div class="gallery-item"><div class="gallery-swatch" style="background:linear-gradient(140deg,#e8a96b 0%,#c97b4a 100%);height:100%;"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">S&#305;k Sorulan Sorular</div>
+        <h2 class="section-title">Merak ettikleriniz<br>i&#231;in <em>buradayız</em></h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <div class="faq-q">Minimum misafir say&#305;s&#305; var m&#305;? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Hay&#305;r, belirli bir minimum misafir say&#305;s&#305; &#351;art&#305;m&#305;z bulunmuyor. 20 ki&#351;ilik &ouml;zel bir kutlamadan 1000 ki&#351;ilik gala gecesine kadar t&uuml;m etkinliklerde hizmet veriyoruz.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q">T&uuml;rkiye genelinde hizmet veriyor musunuz? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Evet! Temel olarak Ege k&#305;y&#305;lar&#305; (&#304;zmir, &#199;e&#351;me, Urla, Bodrum, Marmaris), Antalya Rivierasy ve &#304;stanbul'da aktifiz. Talep &uuml;zerine T&uuml;rkiye'nin her noktas&#305;na gidebiliyoruz.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q">Alkols&uuml;z se&#231;enek sunuyor musunuz? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Elbette. Premium mocktail men&uuml;lerimiz, taze meyve i&#231;eceklerimiz ve alkol i&#231;ermeyen signature kokteyllerimiz ile her misafire &ouml;zel bir deneyim sunuyoruz.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q">Teklif s&uuml;reci nas&#305;l i&#351;liyor? <span class="faq-icon">+</span></div>
+          <div class="faq-a">&#304;leti&#351;im formunu doldurun veya bizi aray&#305;n. 24 saat i&#231;inde etkinlik detaylar&#305;n&#305;z i&#231;in bir ke&#351;if g&ouml;r&uuml;&#351;mesi ayarl&#305;yoruz ve buna g&ouml;re &ouml;zelle&#351;tirilmi&#351; teklifinizi haz&#305;rl&#305;yoruz.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q">Mek&acirc;n &ouml;zelliklerine g&ouml;re bar kurulumu yapabiliyor musunuz? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Kesinlikle. Dar avlulardan geni&#351; yat g&uuml;vertelerine, k&#305;y&#305; mek&acirc;nlar&#305;ndan da&#287; villalar&#305;na kadar her alanda profesyonel kurulum yap&#305;yoruz. Mek&acirc;n g&ouml;rseli veya plan&#305; payla&#351;man&#305;z yeterli.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="iletisim">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="reveal">
+          <div class="section-label">&#304;leti&#351;im</div>
+          <div class="contact-info-label">Etkinli&#287;inizin hik&acirc;yesini birlikte yazal&#305;m</div>
+          <p class="contact-info-text">Her b&uuml;y&uuml;k etkinlik, k&uuml;&#231;&uuml;k bir konu&#351;mayla ba&#351;lar. Detaylar&#305;n&#305;z&#305; payla&#351;&#305;n, sizin i&#231;in en g&uuml;zel deneyimi tasarlayal&#305;m.</p>
+          <div class="contact-detail"><span class="contact-detail-label">E-posta</span><span class="contact-detail-val">hello@talesoffuego.com</span></div>
+          <div class="contact-detail"><span class="contact-detail-label">Telefon</span><span class="contact-detail-val">+90 532 XXX XX XX</span></div>
+          <div class="contact-detail"><span class="contact-detail-label">B&ouml;lgeler</span><span class="contact-detail-val">&#304;zmir &middot; &#199;e&#351;me &middot; Bodrum &middot; &#304;stanbul</span></div>
+        </div>
+        <div class="reveal">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Etkinlik T&uuml;r&uuml;</label>
+              <select class="form-select"><option>D&uuml;&#287;&uuml;n</option><option>Kurumsal Etkinlik</option><option>&Ouml;zel Parti</option><option>Villa / Yat</option><option>Di&#287;er</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Misafir Say&#305;s&#305;</label><input class="form-input" type="text" placeholder="Tahmini ki&#351;i say&#305;s&#305;"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Etkinlik Tarihi</label><input class="form-input" type="date"></div>
+            <div class="form-group"><label class="form-label">Lokasyon</label><input class="form-input" type="text" placeholder="&#350;ehir / Mekan"></div>
+          </div>
+          <div class="form-group"><label class="form-label">B&uuml;t&#231;e Aral&#305;&#287;&#305;</label>
+            <select class="form-select"><option>Belirtmek istemiyorum</option><option>&#8378;20.000 &ndash; &#8378;40.000</option><option>&#8378;40.000 &ndash; &#8378;80.000</option><option>&#8378;80.000 &ndash; &#8378;150.000</option><option>&#8378;150.000+</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">Notlar&#305;n&#305;z</label><textarea class="form-textarea" placeholder="Hayalinizdeki deneyimi anlat&#305;n..."></textarea></div>
+          <button class="form-submit">Teklif Talep Et</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Tales of Fuego</div>
+        <div class="footer-tagline">Bar Catering &amp; Mobile Bar Experience</div>
+      </div>
+      <div class="footer-links">
+        <a href="#biz-kimiz">Biz Kimiz</a>
+        <a href="#deneyim">Hizmetler</a>
+        <a href="#konseptler">Konseptler</a>
+        <a href="#paketler">Paketler</a>
+        <a href="#galeri">Galeri</a>
+        <a href="#iletisim">&#304;leti&#351;im</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Tales of Fuego. T&uuml;m haklar&#305; sakl&#305;d&#305;r.</span>
+      <span class="footer-copy" style="font-style:italic;">Etkinli&#287;inizin en uzun deneyimi.</span>
+    </div>
+  </footer>
+
+  <script>
+    /* ── SERVICE MODAL DATA ── */
+    const services = {
+      'mobile-bar': {
+        num: '01', title: 'Mobile Bar Setup',
+        bg: 'linear-gradient(135deg,#c97b4a 0%,#e8a96b 40%,#d4895a 100%)',
+        tagline: 'Her mekânı premium bir bar deneyimine dönüştürüyoruz.',
+        text: 'Villa bahçesinden yat güvertesine, plaj etkinliğinden kapalı mekâna kadar eksiksiz bir bar kurulumu sunuyoruz. Taşınabilir bar tezgâhlarımız, profesyonel ekipmanlarımız ve estetik tasarımımızla mekânınızı görsel olarak da zenginleştiriyoruz. Kurulum, hizmet ve söküm tamamen bizim sorumluluğumuzda.',
+        features: ['Taşınabilir premium bar tezgâhı','Tam ekipman seti (shaker, buz, vb.)','Estetik aydınlatma & dekor','Kurulum & söküm dahil','2–6 saat hizmet aralığı','Alkollü & alkolsüz seçenekler','Menü önerileri & danışmanlık','Mekân uyumluluk analizi'],
+        colors: ['linear-gradient(135deg,#c97b4a,#e8a96b)','linear-gradient(135deg,#d4895a,#b06840)','linear-gradient(135deg,#e8a96b,#c97b4a)']
+      },
+      'kokteyl': {
+        num: '02', title: 'Kokteyl Tasarımı',
+        bg: 'linear-gradient(135deg,#8a9a60 0%,#c8b870 50%,#a09050 100%)',
+        tagline: 'Her etkinliğin ruhu, özel tasarım bir kadehte saklı.',
+        text: 'Etkinliğinizin temasına, renk paletine ve misafir profilinize göre sıfırdan kokteyl menüsü tasarlıyoruz. Marka lansmanları için logonuzu yansıtan signature içecekler, düğünler için hikâyenizi anlatan özel formüller. Her kadehin görsel sunum tasarımı, garnitür detayı ve tat profili ayrı ayrı belirleniyor.',
+        features: ['Kişiselleştirilmiş signature kokteyl','Marka kimliğiyle uyumlu menü','Tat & sunum testi (pre-event)','Seasonal & lokal malzeme kullanımı','Alkollü & mocktail versiyonlar','Kâğıt menü tasarımı','Garnitür & süsleme seti','Barista eğitimi & sunumu'],
+        colors: ['linear-gradient(135deg,#8a9a60,#c8b870)','linear-gradient(135deg,#a09050,#8a9a60)','linear-gradient(135deg,#c8b870,#e8d880)']
+      },
+      'kurumsal': {
+        num: '03', title: 'Kurumsal Lansmanlar',
+        bg: 'linear-gradient(135deg,#5a4a3a 0%,#8a6a5a 50%,#4a3a2a 100%)',
+        tagline: 'Markanızın hikâyesi, her kadehin içinde.',
+        text: 'Ürün lansmanlarından yıllık gala gecelerine, basın toplantılarından VIP müşteri etkinliklerine kadar kurumsal kimliğinizi yansıtan bar deneyimleri sunuyoruz. Branded bar kurulumları, logolu içecek menüleri ve profesyonel ekibimizle şirketinizin prestijini pekiştiriyoruz.',
+        features: ['Branded & logolu bar kurulumu','Kurumsal kimliğe uygun menü','VIP lounge bar setup','Profesyonel sunum & servis','Büyük ölçek kapasitesi (500+)','Koordinatör & ekip yönetimi','Alkollü & alkolsüz opsiyon','Etkinlik sonrası raporlama'],
+        colors: ['linear-gradient(135deg,#5a4a3a,#8a6a5a)','linear-gradient(135deg,#4a3a2a,#6a5a4a)','linear-gradient(135deg,#8a6a5a,#a08070)']
+      },
+      'dugun': {
+        num: '04', title: 'Lüks Düğünler',
+        bg: 'linear-gradient(135deg,#d4a8b8 0%,#f4cdd8 50%,#e8b8c8 100%)',
+        tagline: 'En özel gününüzde, her detay sizin için.',
+        text: 'Düğününüzün hikâyesini birlikte tasarlıyoruz. Nişan partisinden düğün törenine, cocktail saatinden gala yemeğine kadar her anın içecek servisini özenle planlıyor ve uyguluyoruz. Çiçek aranjmanlarınızla uyumlu bar dekorundan kişisel vows\'unuzu yansıtan signature kokteylinize kadar her detay sizin için.',
+        features: ['Kokteyl saati bar servisi','Sofra & masa içecek servisi','Kişisel signature kokteyl','Bar dekor & çiçek uyumu','Şampanya karşılama servisi','After-party bar kurulumu','Bridal & groom özel içeceği','Fotoğrafçıyla koordinasyon'],
+        colors: ['linear-gradient(135deg,#d4a8b8,#f4cdd8)','linear-gradient(135deg,#e8b8c8,#d4a8b8)','linear-gradient(135deg,#f4ada2,#e8b8c8)']
+      },
+      'ozel': {
+        num: '05', title: 'Özel Etkinlikler',
+        bg: 'linear-gradient(135deg,#6a8a9a 0%,#4a7a8a 50%,#3a5a6a 100%)',
+        tagline: 'Doğum gününden tatil partisine, her an kutlamaya değer.',
+        text: 'Kişisel kutlamalarınız için büyük düşünüyoruz. 20 kişilik doğum günü yemeğinden 200 kişilik tatil partisine, brunch etkinliğinden halloween galasına kadar her özel anı unutulmaz kılacak bar deneyimleri tasarlıyoruz. Temanıza özel dekor, müziğe uygun içecek servisi ve kişiselleştirilmiş dokunuşlar.',
+        features: ['Tema & konsept danışmanlığı','Kişiselleştirilmiş bar dekor','Tematik kokteyl menüsü','Doğum günü signature içeceği','Brunch & afternoon tea bar','Sürpriz bar kurulumu opsiyonu','Küçük grup özel hizmet','Fotoğraf köşesi entegrasyonu'],
+        colors: ['linear-gradient(135deg,#6a8a9a,#4a7a8a)','linear-gradient(135deg,#3a5a6a,#6a8a9a)','linear-gradient(135deg,#4a7a8a,#8aaaba)']
+      },
+      'yat-villa': {
+        num: '06', title: 'Yat & Villa Deneyimi',
+        bg: 'linear-gradient(135deg,#4a6a8a 0%,#a05e35 50%,#c97b4a 100%)',
+        tagline: 'Akdeniz\'in mavisiyle altın saat ışığında, eşsiz bir deneyim.',
+        text: 'Ege ve Akdeniz\'in eşsiz lokasyonlarında, yat güvertelerinden villa teraslarına premium mobil bar hizmetleri sunuyoruz. Deniz üzerinde seyir halindeyken bile tam kapsamlı kokteyl servisi yapabilecek ekipman ve ekibimizle, lokasyonunuz ne kadar özel olursa olsun biz oraya geliriz.',
+        features: ['Yat güvertesi bar kurulumu','Villa bahçe & teras servisi','Deniz koşullarına uygun ekipman','Gün batımı kokteyl paketi','Tekne & gulet uyumlu kurulum','Özel şef & barista iş birliği','Transfer & lojistik dahil','Manzaraya göre bar yönlendirme'],
+        colors: ['linear-gradient(135deg,#4a6a8a,#a05e35)','linear-gradient(135deg,#c97b4a,#e8a96b)','linear-gradient(135deg,#a05e35,#c97b4a)']
+      }
+    };
+
+    function openModal(id) {
+      const s = services[id];
+      if (!s) return;
+      document.getElementById('modal-hero-bg').style.background = s.bg;
+      document.getElementById('modal-num').textContent = s.num;
+      document.getElementById('modal-title').textContent = s.title;
+      document.getElementById('modal-tagline').textContent = s.tagline;
+      document.getElementById('modal-text').textContent = s.text;
+
+      const featEl = document.getElementById('modal-features');
+      featEl.innerHTML = s.features.map(f => `<div class="modal-feature">${f}</div>`).join('');
+
+      const galEl = document.getElementById('modal-gallery');
+      galEl.innerHTML = s.colors.map(c => `
+        <div class="modal-gallery-item">
+          <div class="modal-gallery-swatch" style="background:${c};width:100%;height:100%;"></div>
+        </div>`).join('');
+
+      document.getElementById('modal-backdrop').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target === document.getElementById('modal-backdrop')) closeModal();
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ── SCROLL REVEAL ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── FAQ ── */
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    /* ── NAV SHADOW ── */
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').style.boxShadow =
+        window.scrollY > 50 ? '0 4px 30px rgba(42,27,15,0.08)' : 'none';
+    });
+  </script>
+</body>
+</html>
